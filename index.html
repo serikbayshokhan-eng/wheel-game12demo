@@ -88,11 +88,6 @@ select {
   background: #21436f;
 }
 
-.auth-btn:disabled {
-  opacity: 0.6;
-  cursor: default;
-}
-
 .auth-switch {
   text-align: center;
   color: #5c7ba8;
@@ -719,96 +714,7 @@ select {
 </div>
 
 
-<script type="module">
-
-/* =========================
-   FIREBASE SETUP
-========================= */
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {
-  getFirestore,
-  doc,
-  getDoc,
-  setDoc,
-  updateDoc,
-  collection,
-  addDoc,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBo8mH3UrQvoeg_yiQOkOptQ2AvQsPqFk4",
-  authDomain: "g-perya-demo.firebaseapp.com",
-  projectId: "g-perya-demo",
-  storageBucket: "g-perya-demo.firebasestorage.app",
-  messagingSenderId: "2510715479",
-  appId: "1:2510715479:web:63681b9199a187b1c50112",
-  measurementId: "G-LMLJYCLN41"
-};
-
-const firebaseApp = initializeApp(firebaseConfig);
-const db = getFirestore(firebaseApp);
-
-/* Users are stored as documents in the "users" collection,
-   keyed by a lowercased version of the username.
-   Every bet / deposit is also written as its own document in
-   the "transactions" collection, so the admin site can list
-   everything across all players. */
-
-function userDocId(username){
-  return username.trim().toLowerCase();
-}
-
-async function fetchUser(username){
-
-  const snap = await getDoc(doc(db, "users", userDocId(username)));
-
-  return snap.exists() ? snap.data() : null;
-
-}
-
-async function createUserDoc(username, password){
-
-  await setDoc(doc(db, "users", userDocId(username)), {
-
-    displayName: username,
-    password: password,
-    balance: 10000,
-    createdAt: serverTimestamp(),
-    recentHistory: []
-
-  });
-
-}
-
-async function writeBalance(username, balance){
-
-  await updateDoc(doc(db, "users", userDocId(username)), {
-    balance: balance
-  });
-
-}
-
-async function writeRecentHistory(username, historyArray){
-
-  await updateDoc(doc(db, "users", userDocId(username)), {
-    recentHistory: historyArray
-  });
-
-}
-
-async function logTransaction(entry){
-
-  /* entry: { username, kind, betType, label, amount, balanceAfter } */
-
-  await addDoc(collection(db, "transactions"), {
-    ...entry,
-    createdAt: serverTimestamp()
-  });
-
-}
-
+<script>
 
 (function(){
 
@@ -827,9 +733,34 @@ async function logTransaction(entry){
   var authMessage = document.getElementById('auth-message');
 
   var currentUser = null;
-  var currentAccount = null;
   var registerMode = false;
-  var authBusy = false;
+
+
+  function getAccounts(){
+
+    try {
+
+      return JSON.parse(
+        localStorage.getItem('gPeryaAccounts')
+      ) || {};
+
+    } catch(e){
+
+      return {};
+
+    }
+
+  }
+
+
+  function saveAccounts(accounts){
+
+    localStorage.setItem(
+      'gPeryaAccounts',
+      JSON.stringify(accounts)
+    );
+
+  }
 
 
   function showMessage(text, color){
@@ -883,11 +814,7 @@ async function logTransaction(entry){
   });
 
 
-  authBtn.addEventListener('click', async function(){
-
-    if(authBusy){
-      return;
-    }
+  authBtn.addEventListener('click', function(){
 
     var username =
       usernameInput.value.trim();
@@ -918,55 +845,17 @@ async function logTransaction(entry){
     }
 
 
-    authBusy = true;
-    authBtn.disabled = true;
+    var accounts = getAccounts();
 
 
-    try {
+    /* REGISTER */
 
-      /* REGISTER */
+    if(registerMode){
 
-      if(registerMode){
-
-        var existing = await fetchUser(username);
-
-        if(existing){
-
-          showMessage(
-            'This username already exists',
-            '#5b6b93'
-          );
-
-          return;
-
-        }
-
-
-        await createUserDoc(username, password);
-
-        usernameInput.value = '';
-        passwordInput.value = '';
-
-        showLogin();
+      if(accounts[username]){
 
         showMessage(
-          'Account created! Now login.',
-          '#4aa8ff'
-        );
-
-        return;
-
-      }
-
-
-      /* LOGIN */
-
-      var account = await fetchUser(username);
-
-      if(!account){
-
-        showMessage(
-          'Account not found',
+          'This username already exists',
           '#5b6b93'
         );
 
@@ -975,46 +864,71 @@ async function logTransaction(entry){
       }
 
 
-      if(account.password !== password){
+      accounts[username] = {
 
-        showMessage(
-          'Incorrect password',
-          '#5b6b93'
-        );
+        password: password,
 
-        return;
+        balance: 10000,
 
-      }
+        history: []
+
+      };
 
 
-      currentUser = username;
-      currentAccount = account;
-
-      localStorage.setItem(
-        'gPeryaCurrentUser',
-        currentUser
-      );
+      saveAccounts(accounts);
 
       usernameInput.value = '';
       passwordInput.value = '';
 
-      openGame();
-
-    } catch(err){
-
-      console.error(err);
+      showLogin();
 
       showMessage(
-        'Connection error, try again',
+        'Account created! Now login.',
+        '#4aa8ff'
+      );
+
+      return;
+
+    }
+
+
+    /* LOGIN */
+
+    if(!accounts[username]){
+
+      showMessage(
+        'Account not found',
         '#5b6b93'
       );
 
-    } finally {
-
-      authBusy = false;
-      authBtn.disabled = false;
+      return;
 
     }
+
+
+    if(accounts[username].password !== password){
+
+      showMessage(
+        'Incorrect password',
+        '#5b6b93'
+      );
+
+      return;
+
+    }
+
+
+    currentUser = username;
+
+    localStorage.setItem(
+      'gPeryaCurrentUser',
+      currentUser
+    );
+
+    usernameInput.value = '';
+    passwordInput.value = '';
+
+    openGame();
 
   });
 
@@ -1077,6 +991,30 @@ async function logTransaction(entry){
   var segAngle = 360 / 7;
 
 
+  function getCurrentAccount(){
+
+    var accounts = getAccounts();
+
+    return accounts[currentUser];
+
+  }
+
+
+  function saveCurrentAccount(){
+
+    var accounts = getAccounts();
+
+    if(!accounts[currentUser]){
+      return;
+    }
+
+    accounts[currentUser].balance = balance;
+
+    saveAccounts(accounts);
+
+  }
+
+
   function fmt(n){
 
     return Math.round(n)
@@ -1097,6 +1035,9 @@ async function logTransaction(entry){
 
   function loadHistory(){
 
+    var account =
+      getCurrentAccount();
+
     var list =
       document.getElementById(
         'history-list'
@@ -1104,12 +1045,12 @@ async function logTransaction(entry){
 
     list.innerHTML = '';
 
-    if(!currentAccount || !currentAccount.recentHistory){
+    if(!account || !account.history){
       return;
     }
 
 
-    currentAccount.recentHistory
+    account.history
       .slice(0, 6)
       .forEach(function(entry){
 
@@ -1186,35 +1127,36 @@ async function logTransaction(entry){
   }
 
 
-  async function addHistory(entry){
+  function addHistory(entry){
 
-    if(!currentAccount){
+    var account =
+      getCurrentAccount();
+
+    if(!account){
       return;
     }
 
-    if(!currentAccount.recentHistory){
-      currentAccount.recentHistory = [];
+    if(!account.history){
+      account.history = [];
     }
 
 
-    currentAccount.recentHistory.unshift(entry);
+    account.history.unshift(entry);
 
-    currentAccount.recentHistory =
-      currentAccount.recentHistory.slice(0, 6);
+    account.history =
+      account.history.slice(0, 6);
+
+
+    var accounts =
+      getAccounts();
+
+    accounts[currentUser] =
+      account;
+
+    saveAccounts(accounts);
 
 
     loadHistory();
-
-
-    try {
-
-      await writeRecentHistory(currentUser, currentAccount.recentHistory);
-
-    } catch(err){
-
-      console.error('Failed to save history', err);
-
-    }
 
   }
 
@@ -1234,7 +1176,6 @@ async function logTransaction(entry){
       }
 
       currentUser = null;
-      currentAccount = null;
 
       localStorage.removeItem(
         'gPeryaCurrentUser'
@@ -1258,13 +1199,16 @@ async function logTransaction(entry){
 
   function openGame(){
 
-    if(!currentAccount){
+    var account =
+      getCurrentAccount();
+
+    if(!account){
       return;
     }
 
 
     balance =
-      Number(currentAccount.balance);
+      Number(account.balance);
 
 
     document.getElementById(
@@ -1297,41 +1241,27 @@ async function logTransaction(entry){
      AUTO LOGIN
   ========================= */
 
-  (async function(){
+  var savedUser =
+    localStorage.getItem(
+      'gPeryaCurrentUser'
+    );
 
-    var savedUser =
-      localStorage.getItem(
-        'gPeryaCurrentUser'
-      );
 
-    if(!savedUser){
-      return;
-    }
+  if(savedUser){
 
-    try {
+    var accounts =
+      getAccounts();
 
-      var account = await fetchUser(savedUser);
+    if(accounts[savedUser]){
 
-      if(account){
+      currentUser =
+        savedUser;
 
-        currentUser = savedUser;
-        currentAccount = account;
-
-        openGame();
-
-      } else {
-
-        localStorage.removeItem('gPeryaCurrentUser');
-
-      }
-
-    } catch(err){
-
-      console.error('Auto-login failed', err);
+      openGame();
 
     }
 
-  })();
+  }
 
 
   /* =========================
@@ -1342,7 +1272,7 @@ async function logTransaction(entry){
     'deposit-btn'
   ).addEventListener(
     'click',
-    async function(){
+    function(){
 
       if(!currentUser){
         return;
@@ -1350,6 +1280,8 @@ async function logTransaction(entry){
 
 
       balance += 1000;
+
+      saveCurrentAccount();
 
       updateBalance();
 
@@ -1365,26 +1297,6 @@ async function logTransaction(entry){
 
       msg.style.color =
         '#4aa8ff';
-
-
-      try {
-
-        await writeBalance(currentUser, balance);
-
-        await logTransaction({
-          username: currentUser,
-          kind: 'deposit',
-          betType: null,
-          label: 'Deposit',
-          amount: 1000,
-          balanceAfter: balance
-        });
-
-      } catch(err){
-
-        console.error('Failed to save deposit', err);
-
-      }
 
     }
   );
@@ -1615,12 +1527,9 @@ async function logTransaction(entry){
 
       balance -= bet;
 
+      saveCurrentAccount();
+
       updateBalance();
-
-
-      writeBalance(currentUser, balance).catch(function(err){
-        console.error('Failed to save balance', err);
-      });
 
 
       msg.textContent =
@@ -1643,7 +1552,7 @@ async function logTransaction(entry){
       /* RESULT */
 
       setTimeout(
-        async function(){
+        function(){
 
           var won =
             betType === seg.type;
@@ -1693,41 +1602,23 @@ async function logTransaction(entry){
           }
 
 
-          var netAmount =
-            won ? payout - bet : -bet;
-
-
-          updateBalance();
-
-          await addHistory({
+          addHistory({
 
             label: seg.label,
 
             type: seg.type,
 
-            amount: netAmount
+            amount:
+              won
+                ? payout
+                : -bet
 
           });
 
 
-          try {
+          saveCurrentAccount();
 
-            await writeBalance(currentUser, balance);
-
-            await logTransaction({
-              username: currentUser,
-              kind: 'bet',
-              betType: betType,
-              label: seg.label,
-              amount: netAmount,
-              balanceAfter: balance
-            });
-
-          } catch(err){
-
-            console.error('Failed to save spin result', err);
-
-          }
+          updateBalance();
 
 
           spinning = false;
