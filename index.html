@@ -472,7 +472,7 @@ select {
   </div>
 
   <div class="subtitle">
-    LIGHT OR DARK WHEEL
+    VIRTUAL PRIZE WHEEL
   </div>
 
   <div class="controls">
@@ -488,7 +488,6 @@ select {
   </div>
 
   <div class="choice-row">
-
     <button class="choice-btn selected" data-type="light">
       <span class="swatch" style="background:#e7e9ee"></span>
       White
@@ -503,19 +502,6 @@ select {
       <span class="swatch" style="background:#5b6b93"></span>
       3X
     </button>
-
-  </div>
-
-  <div class="bet-row">
-    <span>Bet</span>
-
-    <input
-      id="bet-amount"
-      type="number"
-      value="100"
-      min="10"
-      step="10"
-    >
   </div>
 
   <div class="balance-row">
@@ -526,9 +512,7 @@ select {
         10,000.00
       </span>
 
-      <button id="deposit-btn" aria-label="Add virtual points">
-        +
-      </button>
+      <span class="virtual-label">VIRTUAL</span>
 
     </div>
 
@@ -568,7 +552,7 @@ select {
         stroke-width="2"
       />
 
-      <g stroke="#0a1220" stroke-width="1.5">
+      <g stroke="#0a1220" stroke-width="3">
 
         <use href="#seg"
              fill="#e7e9ee"
@@ -601,8 +585,8 @@ select {
       </g>
 
       <g
-        font-size="10"
-        font-weight="600"
+        font-size="12"
+        font-weight="800"
         text-anchor="middle"
         font-family="-apple-system, Segoe UI, Roboto, Arial, sans-serif"
       >
@@ -662,7 +646,7 @@ select {
       >
 
         <polygon
-          points="9,0 1,20 17,20"
+          points="1,4 17,4 9,24"
           fill="#4aa8ff"
         />
 
@@ -774,7 +758,7 @@ async function createUserDoc(username, password){
 
     displayName: username,
     password: password,
-    balance: 10000,
+    points: 1000,
     createdAt: serverTimestamp(),
     recentHistory: []
 
@@ -782,7 +766,7 @@ async function createUserDoc(username, password){
 
 }
 
-async function writeBalance(username, balance){
+async function writePoints(username, balance){
 
   await updateDoc(doc(db, "users", userDocId(username)), {
     balance: balance
@@ -797,18 +781,6 @@ async function writeRecentHistory(username, historyArray){
   });
 
 }
-
-async function logTransaction(entry){
-
-  /* entry: { username, kind, betType, label, amount, balanceAfter } */
-
-  await addDoc(collection(db, "transactions"), {
-    ...entry,
-    createdAt: serverTimestamp()
-  });
-
-}
-
 
 (function(){
 
@@ -1264,7 +1236,7 @@ async function logTransaction(entry){
 
 
     balance =
-      Number(currentAccount.balance);
+      Number(currentAccount.points);
 
 
     document.getElementById(
@@ -1332,62 +1304,6 @@ async function logTransaction(entry){
     }
 
   })();
-
-
-  /* =========================
-     VIRTUAL TOP UP
-  ========================= */
-
-  document.getElementById(
-    'deposit-btn'
-  ).addEventListener(
-    'click',
-    async function(){
-
-      if(!currentUser){
-        return;
-      }
-
-
-      balance += 1000;
-
-      updateBalance();
-
-
-      var msg =
-        document.getElementById(
-          'result-msg'
-        );
-
-
-      msg.textContent =
-        '+1,000 virtual points';
-
-      msg.style.color =
-        '#4aa8ff';
-
-
-      try {
-
-        await writeBalance(currentUser, balance);
-
-        await logTransaction({
-          username: currentUser,
-          kind: 'deposit',
-          betType: null,
-          label: 'Deposit',
-          amount: 1000,
-          balanceAfter: balance
-        });
-
-      } catch(err){
-
-        console.error('Failed to save deposit', err);
-
-      }
-
-    }
-  );
 
 
   /* =========================
@@ -1485,64 +1401,13 @@ async function logTransaction(entry){
       }
 
 
-      var bet =
-        parseFloat(
-          document.getElementById(
-            'bet-amount'
-          ).value
-        ) || 0;
-
-
       var msg =
         document.getElementById(
           'result-msg'
         );
 
 
-      if(bet <= 0){
-
-        msg.textContent =
-          'Enter a bet amount';
-
-        msg.style.color =
-          '#5b6b93';
-
-        return;
-
-      }
-
-
-      if(bet < 10){
-
-        msg.textContent =
-          'Minimum bet is 10 virtual points';
-
-        msg.style.color =
-          '#5b6b93';
-
-        return;
-
-      }
-
-
-      if(bet > balance){
-
-        msg.textContent =
-          'Not enough virtual points';
-
-        msg.style.color =
-          '#5b6b93';
-
-        return;
-
-      }
-
-
       spinning = true;
-
-
-      var betType =
-        selectedBet;
 
 
       var speedSel =
@@ -1611,14 +1476,7 @@ async function logTransaction(entry){
         finalRotation;
 
 
-      /* REMOVE BET */
-
-      balance -= bet;
-
-      updateBalance();
-
-
-      writeBalance(currentUser, balance).catch(function(err){
+      writePoints(currentUser, balance).catch(function(err){
         console.error('Failed to save balance', err);
       });
 
@@ -1712,7 +1570,7 @@ async function logTransaction(entry){
 
           try {
 
-            await writeBalance(currentUser, balance);
+            await writePoints(currentUser, balance);
 
             await logTransaction({
               username: currentUser,
