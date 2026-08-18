@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,752 +7,1744 @@
 
 <style>
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
-    margin: 0;
-    min-height: 100vh;
-    background: radial-gradient(circle at top, #4b0b57, #200524 55%, #100112);
-    color: white;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  margin: 0;
+  min-height: 100vh;
+  background: #200524;
+  font-family: -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
 }
 
-.app {
-    width: 100%;
-    max-width: 480px;
-    margin: auto;
-    padding: 18px 14px 35px;
+button,
+input,
+select {
+  font-family: inherit;
 }
 
-.header {
-    text-align: center;
-    margin-bottom: 18px;
+/* =========================
+   AUTH
+========================= */
+
+.auth-card {
+  background: #1e082e;
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 380px;
+  width: 100%;
+  border: 1px solid #212f46;
 }
 
-.logo {
-    font-size: 30px;
-    font-weight: 900;
-    letter-spacing: 3px;
+.auth-title {
+  text-align: center;
+  color: #cfe0ff;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 5px;
+}
+
+.auth-subtitle {
+  text-align: center;
+  color: #476188;
+  font-size: 11px;
+  letter-spacing: 1px;
+  margin-bottom: 24px;
+}
+
+.auth-input {
+  width: 100%;
+  background: #101d33;
+  border: 1px solid #22355a;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 10px;
+  color: #e7e9ee;
+  outline: none;
+}
+
+.auth-input:focus {
+  border-color: #4aa8ff;
+}
+
+.auth-btn {
+  width: 100%;
+  background: #173156;
+  color: #cfe0ff;
+  border: 1px solid #2a4270;
+  border-radius: 8px;
+  padding: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 5px;
+}
+
+.auth-btn:hover {
+  background: #21436f;
+}
+
+.auth-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.auth-switch {
+  text-align: center;
+  color: #5c7ba8;
+  font-size: 12px;
+  margin-top: 16px;
+  cursor: pointer;
+}
+
+.auth-switch:hover {
+  color: #4aa8ff;
+}
+
+.auth-message {
+  text-align: center;
+  min-height: 18px;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+/* =========================
+   GAME
+========================= */
+
+.card {
+  background: #1e082e;
+  border-radius: 16px;
+  padding: 16px;
+  max-width: 380px;
+  width: 100%;
+  border: 1px solid #212f46;
+}
+
+.top-user {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.user-name {
+  color: #7fa8d9;
+  font-size: 12px;
+}
+
+.logout-btn {
+  background: #101d33;
+  border: 1px solid #22355a;
+  color: #7fa8d9;
+  border-radius: 7px;
+  padding: 6px 10px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  border-color: #4aa8ff;
+  color: #cfe0ff;
+}
+
+.title {
+  text-align: center;
+  color: #cfe0ff;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
 }
 
 .subtitle {
-    color: #cba8d2;
-    font-size: 12px;
-    margin-top: 4px;
+  text-align: center;
+  color: #476188;
+  font-size: 11px;
+  letter-spacing: 1px;
+  margin-bottom: 14px;
 }
 
-.card {
-    background: rgba(42, 7, 49, .9);
-    border: 1px solid rgba(255,255,255,.12);
-    border-radius: 22px;
-    padding: 18px;
-    box-shadow: 0 15px 45px rgba(0,0,0,.4);
+.controls {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
 }
 
-/* БАЛАНС */
-
-.balance-box {
-    background: rgba(255,255,255,.055);
-    border: 1px solid rgba(255,255,255,.1);
-    border-radius: 16px;
-    padding: 15px;
-    margin-bottom: 18px;
+select {
+  flex: 1;
+  background: #101d33;
+  border: 1px solid #22355a;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 12px;
+  color: #7fa8d9;
 }
 
-.balance-label {
-    color: #bda3c3;
-    font-size: 12px;
-    text-align: center;
+.choice-label {
+  text-align: center;
+  font-size: 11px;
+  color: #5c7ba8;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
 }
 
-.balance {
-    text-align: center;
-    font-size: 32px;
-    font-weight: 900;
-    margin: 4px 0 12px;
+.choice-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
 }
 
-.balance-buttons {
-    display: flex;
-    gap: 8px;
+.choice-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: #101d33;
+  border: 1px solid #22355a;
+  border-radius: 8px;
+  padding: 10px 6px;
+  cursor: pointer;
+  font-size: 11px;
+  color: #7fa8d9;
+  font-weight: 600;
 }
 
-.balance-buttons button {
-    flex: 1;
-    border: 0;
-    border-radius: 11px;
-    padding: 11px 5px;
-    color: white;
-    font-weight: 800;
-    cursor: pointer;
+.choice-btn .swatch {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid #2a4270;
 }
 
-.bonus-btn {
-    background: linear-gradient(135deg, #9d30c0, #671587);
+.choice-btn.selected {
+  border: 1px solid #4aa8ff;
+  background: #142645;
+  color: #cfe0ff;
 }
 
-.reset-btn {
-    background: rgba(255,255,255,.09);
+.bet-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
 }
 
-/* КОЛЕСО */
-
-.wheel-area {
-    position: relative;
-    width: min(90vw, 390px);
-    aspect-ratio: 1;
-    margin: 0 auto 20px;
+.bet-row span {
+  font-size: 12px;
+  color: #7fa8d9;
 }
 
-.wheel {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    overflow: hidden;
-    position: relative;
-
-    border: 5px solid #ead0ef;
-
-    box-shadow:
-        0 0 0 5px #5c1768,
-        0 15px 35px rgba(0,0,0,.55);
-
-    transition:
-        transform 4s cubic-bezier(.12,.75,.18,1);
+.bet-row input {
+  flex: 1;
+  background: #101d33;
+  border: 1px solid #22355a;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 13px;
+  color: #e7e9ee;
+  outline: none;
 }
 
-/*
-   СЕКТОРА БЕЗ ПРОМЕЖУТКОВ
-*/
-
-.wheel-cell {
-    position: absolute;
-    width: 50.3%;
-    height: 50.3%;
-    left: 50%;
-    top: 50%;
-
-    transform-origin: 0 0;
-
-    margin: 0;
-    padding: 0;
-
-    border: 0;
-    outline: 0;
-
-    overflow: hidden;
+.bet-row input:focus {
+  border-color: #4aa8ff;
 }
 
-.wheel-cell span {
-    position: absolute;
-    left: 25%;
-    top: 27%;
-    width: 72%;
-
-    text-align: center;
-
-    font-size: 17px;
-    font-weight: 900;
-
-    transform: rotate(22.5deg);
-
-    text-shadow: 0 2px 5px rgba(0,0,0,.7);
+.balance-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
 }
 
-/* ОБВОДКА СЕКТОРОВ */
-
-.wheel-cell::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-
-    border-left: 1px solid rgba(255,255,255,.65);
-
-    pointer-events: none;
+.balance-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #101d33;
+  border: 1px solid #22355a;
+  border-radius: 8px;
+  padding: 6px 12px;
 }
 
-.cell1 {
-    transform: rotate(0deg) skewY(-45deg);
-    background: #7d1fa3;
+.balance-pill span {
+  font-size: 13px;
+  color: #7fa8d9;
 }
 
-.cell2 {
-    transform: rotate(45deg) skewY(-45deg);
-    background: #a932c4;
+#deposit-btn {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #173156;
+  border: none;
+  color: #4aa8ff;
+  font-size: 13px;
+  cursor: pointer;
+  line-height: 1;
 }
 
-.cell3 {
-    transform: rotate(90deg) skewY(-45deg);
-    background: #5d1b9d;
+.wheel-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 260px;
+  margin: 0 auto;
 }
 
-.cell4 {
-    transform: rotate(135deg) skewY(-45deg);
-    background: #922bb0;
+#wheel {
+  width: 100%;
+  display: block;
+  transition: transform 4s cubic-bezier(0.15,0.85,0.3,1);
 }
-
-.cell5 {
-    transform: rotate(180deg) skewY(-45deg);
-    background: #6f2392;
-}
-
-.cell6 {
-    transform: rotate(225deg) skewY(-45deg);
-    background: #b138c7;
-}
-
-.cell7 {
-    transform: rotate(270deg) skewY(-45deg);
-    background: #552080;
-}
-
-.cell8 {
-    transform: rotate(315deg) skewY(-45deg);
-    background: #8726a9;
-}
-
-/* СИНИЙ УКАЗАТЕЛЬ */
 
 .pointer {
-    position: absolute;
-    z-index: 30;
-
-    top: -7px;
-    left: 50%;
-
-    transform:
-        translateX(-50%)
-        rotate(180deg);
-
-    width: 0;
-    height: 0;
-
-    border-left: 17px solid transparent;
-    border-right: 17px solid transparent;
-    border-top: 34px solid #20a9ff;
-
-    filter:
-        drop-shadow(0 0 6px #20a9ff)
-        drop-shadow(0 3px 5px rgba(0,0,0,.6));
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
-/* ЦЕНТР */
-
-.center {
-    position: absolute;
-    z-index: 20;
-
-    width: 82px;
-    height: 82px;
-
-    left: 50%;
-    top: 50%;
-
-    transform: translate(-50%, -50%);
-
-    border-radius: 50%;
-    border: 5px solid #f0d8f5;
-
-    background: radial-gradient(circle, #9d35ba, #55106a);
-
-    box-shadow:
-        0 0 0 5px #4c0e59,
-        0 5px 20px rgba(0,0,0,.5);
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-weight: 900;
-    font-size: 13px;
+#result-msg {
+  text-align: center;
+  font-size: 13px;
+  color: #5c7ba8;
+  min-height: 20px;
+  margin: 12px 0 6px;
 }
 
-/* РЕЗУЛЬТАТ */
-
-.result {
-    min-height: 58px;
-
-    border-radius: 15px;
-
-    background: rgba(255,255,255,.06);
-    border: 1px solid rgba(255,255,255,.1);
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    text-align: center;
-
-    margin-bottom: 13px;
+.spin-row {
+  text-align: center;
+  margin-bottom: 10px;
 }
 
-.result-text {
-    font-size: 17px;
-    font-weight: 800;
+#spin-btn {
+  background: #173156;
+  color: #cfe0ff;
+  border: 1px solid #2a4270;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 12px 44px;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
-/* КНОПКА */
-
-.spin-btn {
-    width: 100%;
-
-    border: 0;
-    border-radius: 15px;
-
-    padding: 16px;
-
-    background: linear-gradient(135deg, #9c2fc0, #6d1690);
-
-    color: white;
-
-    font-size: 18px;
-    font-weight: 900;
-
-    cursor: pointer;
+#spin-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
 }
 
-.spin-btn:disabled {
-    opacity: .5;
+.fast-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 16px;
 }
 
-/* ИСТОРИЯ */
-
-.history {
-    margin-top: 20px;
+.fast-row span {
+  font-size: 11px;
+  color: #5c7ba8;
 }
 
-.history-title {
-    font-weight: 900;
-    margin-bottom: 9px;
+#fast-toggle {
+  width: 30px;
+  height: 16px;
+  border-radius: 8px;
+  background: #22355a;
+  position: relative;
+  border: none;
+  cursor: pointer;
 }
 
-.history-list {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
+#fast-knob {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #7fa8d9;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: left 0.2s;
 }
 
-.history-item {
-    background: rgba(255,255,255,.05);
-    border-radius: 11px;
-    padding: 10px 12px;
-
-    display: flex;
-    justify-content: space-between;
-
-    color: #decbe2;
-    font-size: 13px;
+.history-box {
+  background: #101d33;
+  border: 1px solid #22355a;
+  border-radius: 10px;
+  padding: 12px 14px;
 }
 
-.info {
-    text-align: center;
-    margin-top: 14px;
+.history-label {
+  font-size: 11px;
+  color: #5c7ba8;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
 
-    color: #a88cab;
-    font-size: 11px;
-    line-height: 1.5;
+#history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.history-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.demo-note {
+  text-align: center;
+  color: #476188;
+  font-size: 9px;
+  margin-top: 12px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="app">
+<!-- =========================
+     LOGIN / REGISTER
+========================= -->
 
-    <div class="header">
-        <div class="logo">G PERYA</div>
-        <div class="subtitle">VIRTUAL WHEEL</div>
-    </div>
+<div class="auth-card" id="auth-screen">
 
-    <div class="card">
+  <div class="auth-title">G PERYA</div>
 
-        <!-- ВИРТУАЛЬНЫЙ БАЛАНС -->
+  <div class="auth-subtitle">
+    VIRTUAL WHEEL
+  </div>
 
-        <div class="balance-box">
+  <input
+    id="username-input"
+    class="auth-input"
+    type="text"
+    placeholder="Username"
+    maxlength="20"
+  >
 
-            <div class="balance-label">
-                ВИРТУАЛЬНЫЙ БАЛАНС
-            </div>
+  <input
+    id="password-input"
+    class="auth-input"
+    type="password"
+    placeholder="Password"
+    maxlength="30"
+  >
 
-            <div class="balance" id="balance">
-                0.00
-            </div>
+  <button class="auth-btn" id="auth-btn">
+    LOGIN
+  </button>
 
-            <div class="balance-buttons">
+  <div class="auth-switch" id="auth-switch">
+    Don't have an account? Register
+  </div>
 
-                <button
-                    class="bonus-btn"
-                    id="bonusButton">
-                    + БОНУС
-                </button>
-
-                <button
-                    class="reset-btn"
-                    id="resetButton">
-                    СБРОС
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <!-- КОЛЕСО -->
-
-        <div class="wheel-area">
-
-            <div class="pointer"></div>
-
-            <div class="wheel" id="wheel">
-
-                <div class="wheel-cell cell1">
-                    <span>+10</span>
-                </div>
-
-                <div class="wheel-cell cell2">
-                    <span>+25</span>
-                </div>
-
-                <div class="wheel-cell cell3">
-                    <span>+50</span>
-                </div>
-
-                <div class="wheel-cell cell4">
-                    <span>+5</span>
-                </div>
-
-                <div class="wheel-cell cell5">
-                    <span>+100</span>
-                </div>
-
-                <div class="wheel-cell cell6">
-                    <span>+15</span>
-                </div>
-
-                <div class="wheel-cell cell7">
-                    <span>+30</span>
-                </div>
-
-                <div class="wheel-cell cell8">
-                    <span>+75</span>
-                </div>
-
-            </div>
-
-            <div class="center">
-                КРУТИ
-            </div>
-
-        </div>
-
-
-        <!-- РЕЗУЛЬТАТ -->
-
-        <div class="result">
-
-            <div
-                class="result-text"
-                id="result">
-                Нажми «КРУТИТЬ»
-            </div>
-
-        </div>
-
-
-        <button
-            class="spin-btn"
-            id="spinButton">
-            КРУТИТЬ
-        </button>
-
-
-        <div class="history">
-
-            <div class="history-title">
-                История
-            </div>
-
-            <div
-                class="history-list"
-                id="history">
-            </div>
-
-        </div>
-
-
-        <div class="info">
-            В этой версии используются только игровые единицы.
-            Кнопка «БОНУС» бесплатно начисляет игровые единицы.
-        </div>
-
-    </div>
+  <div class="auth-message" id="auth-message"></div>
 
 </div>
 
 
-<script>
+<!-- =========================
+     GAME
+========================= -->
+
+<div class="card" id="game-screen" style="display:none;">
+
+  <div class="top-user">
+    <div class="user-name">
+      Account: <span id="current-user"></span>
+    </div>
+
+    <button class="logout-btn" id="logout-btn">
+      LOG OUT
+    </button>
+  </div>
+
+  <div class="title">
+    G PERYA
+  </div>
+
+  <div class="subtitle">
+    LIGHT OR DARK WHEEL
+  </div>
+
+  <div class="controls">
+    <select id="speed-select">
+      <option value="1">1 second</option>
+      <option value="3">3 seconds</option>
+      <option value="5">5 seconds</option>
+    </select>
+  </div>
+
+  <div class="choice-label">
+    CHOOSE YOUR BET
+  </div>
+
+  <div class="choice-row">
+
+    <button class="choice-btn selected" data-type="light">
+      <span class="swatch" style="background:#e7e9ee"></span>
+      White
+    </button>
+
+    <button class="choice-btn" data-type="dark">
+      <span class="swatch" style="background:#1c2534"></span>
+      Black
+    </button>
+
+    <button class="choice-btn" data-type="triple">
+      <span class="swatch" style="background:#5b6b93"></span>
+      3X
+    </button>
+
+  </div>
+
+  <div class="bet-row">
+    <span>Bet</span>
+
+    <input
+      id="bet-amount"
+      type="number"
+      value="100"
+      min="10"
+      step="10"
+    >
+  </div>
+
+  <div class="balance-row">
+
+    <div class="balance-pill">
+
+      <span id="balance">
+        10,000.00
+      </span>
+
+      <button id="deposit-btn" aria-label="Add virtual points">
+        +
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- WHEEL -->
+
+  <div class="wheel-wrap">
+
+    <svg
+      id="wheel"
+      viewBox="0 0 300 300"
+      role="img"
+      aria-label="Virtual wheel"
+    >
+
+      <title>Light or Dark wheel</title>
+
+      <desc>
+        Virtual wheel with light, dark and 3X segments
+      </desc>
+
+      <defs>
+        <path
+          id="seg"
+          d="M150,150 L150,20 A130,130 0 0,1 231.3,54.4 Z"
+        />
+      </defs>
+
+      <circle
+        cx="150"
+        cy="150"
+        r="140"
+        fill="none"
+        stroke="#2a4270"
+        stroke-width="2"
+      />
+
+      <g stroke="#0a1220" stroke-width="1.5">
+
+        <use href="#seg"
+             fill="#e7e9ee"
+             transform="rotate(0 150 150)"/>
+
+        <use href="#seg"
+             fill="#1c2534"
+             transform="rotate(51.43 150 150)"/>
+
+        <use href="#seg"
+             fill="#e7e9ee"
+             transform="rotate(102.86 150 150)"/>
+
+        <use href="#seg"
+             fill="#1c2534"
+             transform="rotate(154.29 150 150)"/>
+
+        <use href="#seg"
+             fill="#e7e9ee"
+             transform="rotate(205.71 150 150)"/>
+
+        <use href="#seg"
+             fill="#1c2534"
+             transform="rotate(257.14 150 150)"/>
+
+        <use href="#seg"
+             fill="#5b6b93"
+             transform="rotate(308.57 150 150)"/>
+
+      </g>
+
+      <g
+        font-size="10"
+        font-weight="600"
+        text-anchor="middle"
+        font-family="-apple-system, Segoe UI, Roboto, Arial, sans-serif"
+      >
+
+        <text x="191.2" y="68.4" fill="#1c2534">
+          LIGHT
+        </text>
+
+        <text x="242.6" y="132.9" fill="#cfd6e6">
+          DARK
+        </text>
+
+        <text x="224.3" y="213.1" fill="#1c2534">
+          LIGHT
+        </text>
+
+        <text x="150" y="249" fill="#cfd6e6">
+          DARK
+        </text>
+
+        <text x="75.7" y="213.1" fill="#1c2534">
+          LIGHT
+        </text>
+
+        <text x="57.4" y="132.9" fill="#cfd6e6">
+          DARK
+        </text>
+
+        <text
+          x="108.8"
+          y="68.4"
+          fill="#0a1220"
+          font-size="13"
+        >
+          3X
+        </text>
+
+      </g>
+
+      <circle
+        cx="150"
+        cy="150"
+        r="26"
+        fill="#101d33"
+        stroke="#2a4270"
+        stroke-width="2"
+      />
+
+    </svg>
+
+    <div class="pointer">
+
+      <svg
+        width="18"
+        height="24"
+        viewBox="0 0 18 24"
+      >
+
+        <polygon
+          points="9,0 1,20 17,20"
+          fill="#4aa8ff"
+        />
+
+      </svg>
+
+    </div>
+
+  </div>
+
+
+  <div id="result-msg"></div>
+
+
+  <div class="spin-row">
+
+    <button id="spin-btn">
+      SPIN
+    </button>
+
+  </div>
+
+
+  <div class="fast-row">
+
+    <span>
+      FAST MODE
+    </span>
+
+    <button
+      id="fast-toggle"
+      aria-label="Toggle fast mode"
+    >
+      <div id="fast-knob"></div>
+    </button>
+
+  </div>
+
+
+  <div class="history-box">
+
+    <div class="history-label">
+      GAME HISTORY
+    </div>
+
+    <div id="history-list"></div>
+
+  </div>
+
+
+  <div class="demo-note">
+    DEMO VERSION — VIRTUAL POINTS ONLY
+  </div>
+
+</div>
+
+
+<script type="module">
 
 /* =========================
-   СОСТОЯНИЕ
-   ========================= */
+   FIREBASE SETUP
+========================= */
 
-let balance = 0;
-let rotation = 0;
-let spinning = false;
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  collection,
+  addDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+const firebaseConfig = {
+  apiKey: "AIzaSyBo8mH3UrQvoeg_yiQOkOptQ2AvQsPqFk4",
+  authDomain: "g-perya-demo.firebaseapp.com",
+  projectId: "g-perya-demo",
+  storageBucket: "g-perya-demo.firebasestorage.app",
+  messagingSenderId: "2510715479",
+  appId: "1:2510715479:web:63681b9199a187b1c50112",
+  measurementId: "G-LMLJYCLN41"
+};
 
-/* Значения секторов */
+const firebaseApp = initializeApp(firebaseConfig);
+const db = getFirestore(firebaseApp);
 
-const prizes = [
-    10,
-    25,
-    50,
-    5,
-    100,
-    15,
-    30,
-    75
-];
+/* Users are stored as documents in the "users" collection,
+   keyed by a lowercased version of the username.
+   Every bet / deposit is also written as its own document in
+   the "transactions" collection, so the admin site can list
+   everything across all players. */
 
+function userDocId(username){
+  return username.trim().toLowerCase();
+}
 
-const wheel =
-    document.getElementById("wheel");
+async function fetchUser(username){
 
-const balanceElement =
-    document.getElementById("balance");
+  const snap = await getDoc(doc(db, "users", userDocId(username)));
 
-const result =
-    document.getElementById("result");
+  return snap.exists() ? snap.data() : null;
 
-const spinButton =
-    document.getElementById("spinButton");
+}
 
-const bonusButton =
-    document.getElementById("bonusButton");
+async function createUserDoc(username, password){
 
-const resetButton =
-    document.getElementById("resetButton");
+  await setDoc(doc(db, "users", userDocId(username)), {
 
-const history =
-    document.getElementById("history");
+    displayName: username,
+    password: password,
+    balance: 10000,
+    createdAt: serverTimestamp(),
+    recentHistory: []
 
+  });
 
-/* =========================
-   БАЛАНС
-   ========================= */
+}
 
-function updateBalance() {
+async function writeBalance(username, balance){
 
-    /*
-       Никаких NaN.
-       Всегда выводим нормальное число.
-    */
+  await updateDoc(doc(db, "users", userDocId(username)), {
+    balance: balance
+  });
 
-    const safeBalance =
-        Number(balance) || 0;
+}
 
-    balanceElement.textContent =
-        safeBalance.toFixed(2);
+async function writeRecentHistory(username, historyArray){
+
+  await updateDoc(doc(db, "users", userDocId(username)), {
+    recentHistory: historyArray
+  });
+
+}
+
+async function logTransaction(entry){
+
+  /* entry: { username, kind, betType, label, amount, balanceAfter } */
+
+  await addDoc(collection(db, "transactions"), {
+    ...entry,
+    createdAt: serverTimestamp()
+  });
+
 }
 
 
-/* =========================
-   БЕСПЛАТНЫЙ БОНУС
-   ========================= */
+(function(){
 
-bonusButton.addEventListener(
-    "click",
-    function() {
+  /* =========================
+     ACCOUNT SYSTEM
+  ========================= */
 
-        const bonus = 100;
+  var authScreen = document.getElementById('auth-screen');
+  var gameScreen = document.getElementById('game-screen');
 
-        balance += bonus;
+  var usernameInput = document.getElementById('username-input');
+  var passwordInput = document.getElementById('password-input');
 
-        updateBalance();
+  var authBtn = document.getElementById('auth-btn');
+  var authSwitch = document.getElementById('auth-switch');
+  var authMessage = document.getElementById('auth-message');
 
-        result.textContent =
-            `Бонус: +${bonus}.00 игровых единиц`;
+  var currentUser = null;
+  var currentAccount = null;
+  var registerMode = false;
+  var authBusy = false;
 
-        addHistory(
-            `Бесплатный бонус +${bonus}.00`
-        );
+
+  function showMessage(text, color){
+
+    authMessage.textContent = text;
+    authMessage.style.color = color;
+
+  }
+
+
+  function showRegister(){
+
+    registerMode = true;
+
+    authBtn.textContent = 'REGISTER';
+
+    authSwitch.textContent =
+      'Already have an account? Login';
+
+    showMessage('', '#476188');
+
+  }
+
+
+  function showLogin(){
+
+    registerMode = false;
+
+    authBtn.textContent = 'LOGIN';
+
+    authSwitch.textContent =
+      "Don't have an account? Register";
+
+    showMessage('', '#476188');
+
+  }
+
+
+  authSwitch.addEventListener('click', function(){
+
+    if(registerMode){
+
+      showLogin();
+
+    } else {
+
+      showRegister();
+
     }
-);
+
+  });
 
 
-/* =========================
-   СБРОС
-   ========================= */
+  authBtn.addEventListener('click', async function(){
 
-resetButton.addEventListener(
-    "click",
-    function() {
-
-        balance = 0;
-
-        updateBalance();
-
-        result.textContent =
-            "Баланс сброшен";
-
-        addHistory(
-            "Баланс сброшен"
-        );
+    if(authBusy){
+      return;
     }
-);
+
+    var username =
+      usernameInput.value.trim();
+
+    var password =
+      passwordInput.value;
+
+    if(username.length < 3){
+
+      showMessage(
+        'Username must contain at least 3 characters',
+        '#5b6b93'
+      );
+
+      return;
+
+    }
+
+    if(password.length < 4){
+
+      showMessage(
+        'Password must contain at least 4 characters',
+        '#5b6b93'
+      );
+
+      return;
+
+    }
 
 
-/* =========================
-   КРУЧЕНИЕ
-   ========================= */
-
-spinButton.addEventListener(
-    "click",
-    spin
-);
+    authBusy = true;
+    authBtn.disabled = true;
 
 
-function spin() {
+    try {
 
-    if (spinning) {
+      /* REGISTER */
+
+      if(registerMode){
+
+        var existing = await fetchUser(username);
+
+        if(existing){
+
+          showMessage(
+            'This username already exists',
+            '#5b6b93'
+          );
+
+          return;
+
+        }
+
+
+        await createUserDoc(username, password);
+
+        usernameInput.value = '';
+        passwordInput.value = '';
+
+        showLogin();
+
+        showMessage(
+          'Account created! Now login.',
+          '#4aa8ff'
+        );
+
         return;
+
+      }
+
+
+      /* LOGIN */
+
+      var account = await fetchUser(username);
+
+      if(!account){
+
+        showMessage(
+          'Account not found',
+          '#5b6b93'
+        );
+
+        return;
+
+      }
+
+
+      if(account.password !== password){
+
+        showMessage(
+          'Incorrect password',
+          '#5b6b93'
+        );
+
+        return;
+
+      }
+
+
+      currentUser = username;
+      currentAccount = account;
+
+      localStorage.setItem(
+        'gPeryaCurrentUser',
+        currentUser
+      );
+
+      usernameInput.value = '';
+      passwordInput.value = '';
+
+      openGame();
+
+    } catch(err){
+
+      console.error(err);
+
+      showMessage(
+        'Connection error, try again',
+        '#5b6b93'
+      );
+
+    } finally {
+
+      authBusy = false;
+      authBtn.disabled = false;
+
     }
 
-    spinning = true;
-
-    spinButton.disabled = true;
-
-    result.textContent =
-        "Колесо крутится...";
+  });
 
 
-    /*
-       Выбираем сектор.
-    */
+  /* =========================
+     GAME DATA
+  ========================= */
 
-    const index =
-        Math.floor(
-            Math.random() * prizes.length
+  var balance = 10000;
+
+  var spinning = false;
+
+  var fastMode = false;
+
+  var selectedBet = 'light';
+
+  var currentRotation = 0;
+
+
+  var segments = [
+
+    {
+      label:'Light',
+      type:'light'
+    },
+
+    {
+      label:'Dark',
+      type:'dark'
+    },
+
+    {
+      label:'Light',
+      type:'light'
+    },
+
+    {
+      label:'Dark',
+      type:'dark'
+    },
+
+    {
+      label:'Light',
+      type:'light'
+    },
+
+    {
+      label:'Dark',
+      type:'dark'
+    },
+
+    {
+      label:'3X',
+      type:'triple'
+    }
+
+  ];
+
+
+  var segAngle = 360 / 7;
+
+
+  function fmt(n){
+
+    return Math.round(n)
+      .toLocaleString('en-US');
+
+  }
+
+
+  function updateBalance(){
+
+    document.getElementById(
+      'balance'
+    ).textContent =
+      fmt(balance) + '.00';
+
+  }
+
+
+  function loadHistory(){
+
+    var list =
+      document.getElementById(
+        'history-list'
+      );
+
+    list.innerHTML = '';
+
+    if(!currentAccount || !currentAccount.recentHistory){
+      return;
+    }
+
+
+    currentAccount.recentHistory
+      .slice(0, 6)
+      .forEach(function(entry){
+
+        addHistoryToScreen(entry);
+
+      });
+
+  }
+
+
+  function addHistoryToScreen(entry){
+
+    var list =
+      document.getElementById(
+        'history-list'
+      );
+
+    var row =
+      document.createElement('div');
+
+    row.className =
+      'history-row';
+
+
+    var nameSpan =
+      document.createElement('span');
+
+    nameSpan.textContent =
+      entry.label;
+
+
+    if(entry.type === 'triple'){
+
+      nameSpan.style.color =
+        '#7f8fb5';
+
+    }
+
+    else if(entry.type === 'light'){
+
+      nameSpan.style.color =
+        '#e7e9ee';
+
+    }
+
+    else {
+
+      nameSpan.style.color =
+        '#cfd6e6';
+
+    }
+
+
+    var amtSpan =
+      document.createElement('span');
+
+    amtSpan.textContent =
+      (entry.amount >= 0 ? '+' : '') +
+      fmt(entry.amount);
+
+
+    amtSpan.style.color =
+      entry.amount >= 0
+        ? '#4aa8ff'
+        : '#5b6b93';
+
+
+    row.appendChild(nameSpan);
+
+    row.appendChild(amtSpan);
+
+    list.appendChild(row);
+
+  }
+
+
+  async function addHistory(entry){
+
+    if(!currentAccount){
+      return;
+    }
+
+    if(!currentAccount.recentHistory){
+      currentAccount.recentHistory = [];
+    }
+
+
+    currentAccount.recentHistory.unshift(entry);
+
+    currentAccount.recentHistory =
+      currentAccount.recentHistory.slice(0, 6);
+
+
+    loadHistory();
+
+
+    try {
+
+      await writeRecentHistory(currentUser, currentAccount.recentHistory);
+
+    } catch(err){
+
+      console.error('Failed to save history', err);
+
+    }
+
+  }
+
+
+  /* =========================
+     LOGOUT
+  ========================= */
+
+  document.getElementById(
+    'logout-btn'
+  ).addEventListener(
+    'click',
+    function(){
+
+      if(spinning){
+        return;
+      }
+
+      currentUser = null;
+      currentAccount = null;
+
+      localStorage.removeItem(
+        'gPeryaCurrentUser'
+      );
+
+      gameScreen.style.display =
+        'none';
+
+      authScreen.style.display =
+        'block';
+
+      showLogin();
+
+    }
+  );
+
+
+  /* =========================
+     OPEN GAME
+  ========================= */
+
+  function openGame(){
+
+    if(!currentAccount){
+      return;
+    }
+
+
+    balance =
+      Number(currentAccount.balance);
+
+
+    document.getElementById(
+      'current-user'
+    ).textContent =
+      currentUser;
+
+
+    updateBalance();
+
+    loadHistory();
+
+
+    authScreen.style.display =
+      'none';
+
+    gameScreen.style.display =
+      'block';
+
+
+    document.getElementById(
+      'result-msg'
+    ).textContent =
+      '';
+
+  }
+
+
+  /* =========================
+     AUTO LOGIN
+  ========================= */
+
+  (async function(){
+
+    var savedUser =
+      localStorage.getItem(
+        'gPeryaCurrentUser'
+      );
+
+    if(!savedUser){
+      return;
+    }
+
+    try {
+
+      var account = await fetchUser(savedUser);
+
+      if(account){
+
+        currentUser = savedUser;
+        currentAccount = account;
+
+        openGame();
+
+      } else {
+
+        localStorage.removeItem('gPeryaCurrentUser');
+
+      }
+
+    } catch(err){
+
+      console.error('Auto-login failed', err);
+
+    }
+
+  })();
+
+
+  /* =========================
+     VIRTUAL TOP UP
+  ========================= */
+
+  document.getElementById(
+    'deposit-btn'
+  ).addEventListener(
+    'click',
+    async function(){
+
+      if(!currentUser){
+        return;
+      }
+
+
+      balance += 1000;
+
+      updateBalance();
+
+
+      var msg =
+        document.getElementById(
+          'result-msg'
         );
 
 
-    const prize =
-        Number(prizes[index]) || 0;
+      msg.textContent =
+        '+1,000 virtual points';
+
+      msg.style.color =
+        '#4aa8ff';
 
 
-    /*
-       Каждый сектор = 45 градусов.
-    */
+      try {
 
-    const sectorAngle = 45;
+        await writeBalance(currentUser, balance);
 
+        await logTransaction({
+          username: currentUser,
+          kind: 'deposit',
+          betType: null,
+          label: 'Deposit',
+          amount: 1000,
+          balanceAfter: balance
+        });
 
-    /*
-       Добавляем 6 полных оборотов.
-    */
+      } catch(err){
 
-    const target =
-        360 -
-        (
-            index * sectorAngle +
-            sectorAngle / 2
-        );
+        console.error('Failed to save deposit', err);
 
+      }
 
-    rotation +=
-        360 * 6 +
-        target;
-
-
-    wheel.style.transform =
-        `rotate(${rotation}deg)`;
+    }
+  );
 
 
-    setTimeout(
-        function() {
+  /* =========================
+     CHOICE BUTTONS
+  ========================= */
 
-            /*
-               Добавляем игровые единицы.
-            */
-
-            balance += prize;
-
-            updateBalance();
+  var choiceButtons =
+    document.querySelectorAll(
+      '.choice-btn'
+    );
 
 
-            result.textContent =
-                `Выпало +${prize}.00`;
+  choiceButtons.forEach(
+    function(btn){
+
+      btn.addEventListener(
+        'click',
+        function(){
+
+          choiceButtons.forEach(
+            function(b){
+
+              b.classList.remove(
+                'selected'
+              );
+
+            }
+          );
 
 
-            addHistory(
-                `Колесо +${prize}.00`
+          btn.classList.add(
+            'selected'
+          );
+
+
+          selectedBet =
+            btn.getAttribute(
+              'data-type'
             );
 
-
-            spinning = false;
-
-            spinButton.disabled = false;
-
-        },
-        4100
-    );
-}
-
-
-/* =========================
-   ИСТОРИЯ
-   ========================= */
-
-function addHistory(text) {
-
-    const item =
-        document.createElement("div");
-
-    item.className =
-        "history-item";
-
-
-    const time =
-        new Date().toLocaleTimeString(
-            "ru-RU",
-            {
-                hour: "2-digit",
-                minute: "2-digit"
-            }
-        );
-
-
-    item.innerHTML = `
-        <span>${text}</span>
-        <span>${time}</span>
-    `;
-
-
-    history.prepend(item);
-
-
-    /*
-       Максимум 10 записей.
-    */
-
-    while (
-        history.children.length > 10
-    ) {
-
-        history.removeChild(
-            history.lastChild
-        );
+        }
+      );
 
     }
-}
+  );
 
 
-/*
-   Запускаем с корректным балансом.
-*/
+  /* =========================
+     FAST MODE
+  ========================= */
 
-updateBalance();
+  document.getElementById(
+    'fast-toggle'
+  ).addEventListener(
+    'click',
+    function(){
+
+      fastMode =
+        !fastMode;
+
+
+      var knob =
+        document.getElementById(
+          'fast-knob'
+        );
+
+
+      knob.style.left =
+        fastMode
+          ? '16px'
+          : '2px';
+
+
+      this.style.background =
+        fastMode
+          ? '#2a5fa8'
+          : '#22355a';
+
+    }
+  );
+
+
+  /* =========================
+     SPIN
+  ========================= */
+
+  document.getElementById(
+    'spin-btn'
+  ).addEventListener(
+    'click',
+    function(){
+
+      if(spinning){
+        return;
+      }
+
+
+      var bet =
+        parseFloat(
+          document.getElementById(
+            'bet-amount'
+          ).value
+        ) || 0;
+
+
+      var msg =
+        document.getElementById(
+          'result-msg'
+        );
+
+
+      if(bet <= 0){
+
+        msg.textContent =
+          'Enter a bet amount';
+
+        msg.style.color =
+          '#5b6b93';
+
+        return;
+
+      }
+
+
+      if(bet < 10){
+
+        msg.textContent =
+          'Minimum bet is 10 virtual points';
+
+        msg.style.color =
+          '#5b6b93';
+
+        return;
+
+      }
+
+
+      if(bet > balance){
+
+        msg.textContent =
+          'Not enough virtual points';
+
+        msg.style.color =
+          '#5b6b93';
+
+        return;
+
+      }
+
+
+      spinning = true;
+
+
+      var betType =
+        selectedBet;
+
+
+      var speedSel =
+        parseInt(
+          document.getElementById(
+            'speed-select'
+          ).value,
+          10
+        );
+
+
+      var duration =
+        fastMode
+          ? 1.2
+          : (1 + speedSel * 0.6);
+
+
+      /* RANDOM RESULT */
+
+      var winIndex =
+        Math.floor(
+          Math.random() *
+          segments.length
+        );
+
+
+      var seg =
+        segments[winIndex];
+
+
+      var targetAngleInWheel =
+        winIndex * segAngle +
+        segAngle / 2;
+
+
+      var extraSpins =
+        fastMode ? 3 : 5;
+
+
+      var finalRotation =
+        currentRotation -
+        (currentRotation % 360) +
+        360 * extraSpins +
+        (360 - targetAngleInWheel);
+
+
+      var wheel =
+        document.getElementById(
+          'wheel'
+        );
+
+
+      wheel.style.transition =
+        'transform ' +
+        duration +
+        's cubic-bezier(0.15,0.85,0.3,1)';
+
+
+      wheel.style.transform =
+        'rotate(' +
+        finalRotation +
+        'deg)';
+
+
+      currentRotation =
+        finalRotation;
+
+
+      /* REMOVE BET */
+
+      balance -= bet;
+
+      updateBalance();
+
+
+      writeBalance(currentUser, balance).catch(function(err){
+        console.error('Failed to save balance', err);
+      });
+
+
+      msg.textContent =
+        'Spinning...';
+
+      msg.style.color =
+        '#5c7ba8';
+
+
+      var spinBtn =
+        document.getElementById(
+          'spin-btn'
+        );
+
+
+      spinBtn.disabled =
+        true;
+
+
+      /* RESULT */
+
+      setTimeout(
+        async function(){
+
+          var won =
+            betType === seg.type;
+
+
+          var payout = 0;
+
+
+          if(won){
+
+            payout =
+              bet *
+              (
+                seg.type === 'triple'
+                  ? 6
+                  : 2
+              );
+
+
+            balance += payout;
+
+
+            msg.textContent =
+              'Result: ' +
+              seg.label +
+              ' — +' +
+              fmt(payout);
+
+
+            msg.style.color =
+              '#4aa8ff';
+
+          }
+
+          else {
+
+            msg.textContent =
+              'Result: ' +
+              seg.label +
+              ' — lost ' +
+              fmt(bet);
+
+
+            msg.style.color =
+              '#5b6b93';
+
+          }
+
+
+          var netAmount =
+            won ? payout - bet : -bet;
+
+
+          updateBalance();
+
+          await addHistory({
+
+            label: seg.label,
+
+            type: seg.type,
+
+            amount: netAmount
+
+          });
+
+
+          try {
+
+            await writeBalance(currentUser, balance);
+
+            await logTransaction({
+              username: currentUser,
+              kind: 'bet',
+              betType: betType,
+              label: seg.label,
+              amount: netAmount,
+              balanceAfter: balance
+            });
+
+          } catch(err){
+
+            console.error('Failed to save spin result', err);
+
+          }
+
+
+          spinning = false;
+
+          spinBtn.disabled =
+            false;
+
+
+        },
+        duration * 1000 + 50
+      );
+
+    }
+  );
+
+
+})();
 
 </script>
 
